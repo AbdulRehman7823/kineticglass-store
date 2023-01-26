@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
+import alert from "@/Services/Alert";
+import { ClockLoader } from "react-spinners";
 
 const NetlifyDeployer = () => {
-  const [siteName, setSiteName] = useState("");
+  const [siteName, setSiteName] = useState("p3244gdgssd");
   const [buildFolder, setBuildFolder] = useState(null);
   const token = "0ZM-0XfbmXqf0iLPvQXAtAeXgscbX3ss8N5_U0I49sk";
 
@@ -29,7 +31,7 @@ const NetlifyDeployer = () => {
       const siteId = res.data.id;
       setCreateLoading(false);
       await deployBuild(siteId, buildFolder);
-      alert("Build Successfully Deployed!");
+      alert.showSuccessAlert("Build Successfully Deployed!");
     } catch (error) {
       console.error(error);
       setCreateLoading(false);
@@ -39,22 +41,24 @@ const NetlifyDeployer = () => {
   const deployBuild = async (siteId, buildFolder) => {
     try {
       setDeployLoading(true);
-      const formData = new FormData();
-      formData.append("folder", buildFolder);
+      const formData = {};
+      console.log(formData);
       await axios
         .post(
           `https://api.netlify.com/api/v1/sites/${siteId}/deploys`,
-          formData,
+          buildFolder,
           {
             headers: {
-              "Content-Type": "application/zip",
+              "Content-Type": `application/zip`,
               Authorization: `Bearer ${token}`,
             },
           }
         )
         .then((response) => {
           console.log(response);
-        });
+          alert.showErrorAlert(response);
+        })
+        .catch((err) => console.log(err));
       setDeployLoading(false);
     } catch (error) {
       console.error(error);
@@ -64,30 +68,54 @@ const NetlifyDeployer = () => {
 
   const handleFileSelect = (e) => {
     setBuildFolder(e.target.files[0]);
+    console.log(e.target.files[0]);
   };
 
   return (
-    <div className="flex flex-col  w-full ">
-      <label
-        class="block mb-2 w-full text-sm font-medium text-gray-900 dark:text-white"
-        for="file_input"
-      >
-        Upload file
-      </label>
-      <input
-        className="block w-full text-lg text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-        type="file"
-      />
+    <>
+      {createLoading ? (
+        <div className="w-full flex flex-col items-center justify-center mt-12">
+          <h1 className="w-full text-xl text-center mb-4 text-gray-600 font-bold">
+            We Are Creating your App
+          </h1>
+          <ClockLoader className="w-full" color="#36d7b7" size={100} />
+        </div>
+      ) : (
+        <>
+          {deployLoading ? (
+            <div className="w-full flex flex-col items-center justify-center mt-12">
+              <h1 className="w-full text-xl text-center mb-4 text-gray-600 font-bold">
+                App Is Deploying Stay with us!
+              </h1>
+              <ClimbingBoxLoader color="#36d7b7" />
+            </div>
+          ) : (
+            <div className="flex flex-col  w-full ">
+              <label
+                class="block mb-2 w-full text-sm font-medium text-gray-900 dark:text-white"
+                for="file_input"
+              >
+                Upload file
+              </label>
+              <input
+                className="block w-full text-lg text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                type="file"
+                onChange={handleFileSelect}
+              />
 
-      <button
-        type="button"
-        onClick={handleSubmit}
-        className="w-2/5 block bg-cyan-800 shadow-lg  hover:bg-cyan-700 transition duration-150 ease-in-out focus:bg-cyan-900 text-white font-semibold rounded-lg
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="w-2/5 block bg-cyan-800 shadow-lg  hover:bg-cyan-700 transition duration-150 ease-in-out focus:bg-cyan-900 text-white font-semibold rounded-lg
             px-4 py-3 mt-6"
-      >
-        Deploy
-      </button>
-    </div>
+              >
+                Deploy
+              </button>
+            </div>
+          )}
+        </>
+      )}
+    </>
   );
 };
 export default NetlifyDeployer;
