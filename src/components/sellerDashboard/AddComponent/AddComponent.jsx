@@ -17,6 +17,16 @@ function AddComponent() {
   const [fileUrl, setFileUrl] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [progress, setProgress] = React.useState(0);
+  const [fdata, setData] = useState({
+    siteName: "",
+    siteDesc: "",
+    siteImg: "",
+    siteSourceCode: "",
+    siteLink: "",
+  });
+  const handleFormData = (key, value) => {
+    setData({ ...fdata, [key]: value });
+  };
   async function uploadFile(e) {
     setProgress(0);
     const file = e.target.files[0];
@@ -27,6 +37,7 @@ function AddComponent() {
           setFileUrl(
             url.split("d/")[0] + "d/fl_attachment/" + url.split("d/")[1]
           );
+          handleFormData("siteSourceCode", url);
         }
       },
       setProgress,
@@ -70,6 +81,7 @@ function AddComponent() {
   const handleUpload = (e) => {
     e.preventDefault();
     setUploading(true);
+    console.log(fdata);
   };
 
   const handleDeploy = (e) => {
@@ -87,7 +99,7 @@ function AddComponent() {
         if (success) {
           uploadImage(result, (url, success) => {
             if (success) {
-              setIurl(`${url}`);
+              handleFormData("siteImg", url);
               setImgUrl(acceptedFiles[0].name);
             }
           });
@@ -163,6 +175,8 @@ function AddComponent() {
                 className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-cyan-800
                   focus:bg-white focus:outline-none"
                 required
+                value={fdata.siteName}
+                onChange={(e) => handleFormData("siteName", e.target.value)}
               />
             </div>
 
@@ -178,6 +192,8 @@ function AddComponent() {
                 rows="4"
                 className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:border-cyan-800 focus:outline-none "
                 placeholder="Write your Site Description here..."
+                value={fdata.siteDesc}
+                onChange={(e) => handleFormData("siteDesc", e.target.value)}
               ></textarea>
               <button
                 type="button"
@@ -234,17 +250,18 @@ function AddComponent() {
                         </p>
                       </div>
                       <input type="file" onChange={uploadFile}></input>
-                      {progress>0 && (
-                        <div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
-                          <div
-                            class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
-                            style={`width:${progress}`}
-                          >
-                            
-                            {progress}
+
+                      {progress > 0 ||
+                        (progress == 100 && (
+                          <div class="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
+                            <div
+                              class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
+                              style={{ width: progress + "%" }}
+                            >
+                              {progress}
+                            </div>
                           </div>
-                        </div>
-                      )}
+                        ))}
                     </label>
                   ) : (
                     <img
@@ -342,7 +359,7 @@ function AddComponent() {
                 <p className="text-gray-600 text-sm">
                   Go to your react or next project run command{" "}
                   <code class="bg-gray-600 text-white rounded-lg px-4 py-1">
-                    "npm build"
+                    {"npm build"}
                   </code>
                   . then you will get a build upload it here!
                 </p>
@@ -382,6 +399,8 @@ function AddComponent() {
                     minlength="6"
                     className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-cyan-800
                   focus:bg-white focus:outline-none"
+                    value={data.siteUrl}
+                    onChange={(e) => handleFormData("siteUrl", e.target.value)}
                     required
                   />
                 </div>
