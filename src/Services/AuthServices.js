@@ -1,5 +1,6 @@
 import GenericService from "./GenericService";
 import jwtDecode from "jwt-decode";
+import axios from "axios";
 class AuthServices extends GenericService {
   constructor() {
     super();
@@ -8,6 +9,8 @@ class AuthServices extends GenericService {
   registerUser = (data) => this.post("auth/register/", data);
   login = (data) =>
     new Promise((resolve, reject) => {
+      axios.defaults.headers.common["authorization"] =
+localStorage.getItem("accessToken");
       this.post("auth/login/", data)
         .then((token) => {
           console.log(token.accessToken);
@@ -27,6 +30,8 @@ class AuthServices extends GenericService {
   };
   getLoggedInUser = () => {
     try {
+      axios.defaults.headers.common["authorization"] =
+localStorage.getItem("accessToken");
       const jwt = localStorage.getItem("accessToken");
       if (jwt != null) return jwtDecode(jwt);
     } catch (ex) {
