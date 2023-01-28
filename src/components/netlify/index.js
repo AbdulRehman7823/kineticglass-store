@@ -5,7 +5,7 @@ import alert from "@/Services/Alert";
 import { ClockLoader } from "react-spinners";
 
 const NetlifyDeployer = () => {
-  const [siteName, setSiteName] = useState("p3244gdgssd");
+  const [siteName, setSiteName] = useState("storybook-kinetic-glass");
   const [buildFolder, setBuildFolder] = useState(null);
   const token = "0ZM-0XfbmXqf0iLPvQXAtAeXgscbX3ss8N5_U0I49sk";
 

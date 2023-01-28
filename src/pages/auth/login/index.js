@@ -67,7 +67,7 @@ function Login() {
         .then((data) => {
           setLoading(false);
           alert.showSuccessAlert("Successfully Logged in!");
-          window.location.reload(false);
+          navigate.push("/");
         })
         .catch((err) => {
           alert.showErrorAlert("User is invalid" + err);
@@ -163,7 +163,7 @@ function Login() {
               >
                 <div className="flex items-center justify-center">
                   <FcGoogle></FcGoogle>
-                  <span className="ml-4">Log in with Google</span>
+                  <span className="ml-4">Continue with Google</span>
                 </div>
               </button>
               <button
@@ -173,7 +173,7 @@ function Login() {
               >
                 <div className="flex items-center justify-center">
                   <FaGithub></FaGithub>
-                  <span className="ml-4">Log in with Google</span>
+                  <span className="ml-4">Continue with Github</span>
                 </div>
               </button>
             </form>

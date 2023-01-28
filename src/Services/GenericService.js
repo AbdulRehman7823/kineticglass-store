@@ -1,11 +1,13 @@
 import axios from "axios";
-import React from "react";
 axios.defaults.baseURL = "http://localhost:4000/api/";
-
 axios.defaults.withCredentials = true;
 
 class GenericService {
-  constructor() {}
+
+  
+  constructor() {
+    
+  }
   get = (url) =>
     new Promise((resolve, reject) => {
       axios
