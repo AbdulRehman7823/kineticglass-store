@@ -1,26 +1,48 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import Hero from '@/components/hero'
-import { signOut, useSession } from "next-auth/react"
+import Head from "next/head";
+import Image from "next/image";
+import { Inter } from "@next/font/google";
+import Hero from "@/components/hero";
+import { signOut, useSession } from "next-auth/react";
+import { useEffect } from "react";
+import authServices from "../Services/AuthServices";
+import alert from "../Services/Alert";
+
+import React from "react";
+import Navbar from "@/components/navbar";
+import TopSection from "@/components/TopSection/TopSection";
 
 export default function Home() {
+  const { data: session } = useSession();
 
-  const {data: session} = useSession();
+  const [user, setUser] = React.useState();
   async function handleSighout() {
-    signOut();
+    session ? signOut() : authServices.logout();
   }
+
+  useEffect(() => {
+    if (session) {
+      console.log(authServices.getLoggedInUser());
+      console.log(session);
+      authServices
+        .thirdPartyRegister(session.user)
+        .then((response) => {
+          console.log(response);
+          alert.showSuccessAlert(response);
+          console.log(authServices.getLoggedInUser());
+        })
+        .catch((error) => {
+          alert.showErrorAlert(error);
+        });
+    }
+  }, [session]);
+
+  useEffect(() => {
+    setUser(authServices.getLoggedInUser());
+  }, []);
   return (
-    <div className="flex flex-col justify-center m-12">
-      {session ?
-      <div className="flex flex-col justify-center m-12">
-        <button className=''  onClick={handleSighout}>signout</button>
-      <h1>{session.user.email}</h1>
-      <h1>{session.user.name}</h1>
-      <img src={session.user.image}/>
-      </div>:<h1>Un Authorization</h1>}
-
-      </div>
-
-  )
+    <>
+      <Navbar></Navbar>
+      <TopSection></TopSection>
+    </>
+  );
 }
