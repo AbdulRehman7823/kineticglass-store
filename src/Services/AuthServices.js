@@ -10,7 +10,7 @@ class AuthServices extends GenericService {
     new Promise((resolve, reject) => {
       axios.defaults.headers.common["authorization"] =
         localStorage.getItem("accessToken");
-      this.post("auth/thirdpary/register/", data)
+      this.post("auth/thirdparty/register/", data)
         .then((token) => {
           console.log(token.accessToken);
           localStorage.setItem("accessToken", token.accessToken);

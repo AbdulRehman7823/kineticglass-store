@@ -13,12 +13,12 @@ function TopSection() {
           <section className="text-gray-600 body-font mt-16">
             <div className="container px-5 py-24 mx-auto">
               <div className="flex flex-col text-center w-full mb-12">
-                <h1 className="sm:text-5xl text-4xl font-bold title-font mb-4 text-gray-100 py-5 text-white">
+                <div className="sm:text-5xl text-4xl font-bold title-font mb-4 text-gray-100 py-5 text-white">
                   Create Modern React apps with
                   <h1 className="text-cyan-600 sm:text-6xl text-4xl font-bold font-mono">
                     Kinetic Glass 
                   </h1>
-                </h1>
+                </div>
                 <p className="lg:w-2/3 mx-auto leading-relaxed text-base text-lg text-white px-20">
                   Kinetic Glass is a simple, modular and accessible component
                   library that gives you the building blocks you need to build
@@ -27,7 +27,7 @@ function TopSection() {
               </div>
               <div className="flex lg:w-2/3 justify-around items-center w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
                 <button 
-                 onClick={()=>navigate.push("/dashboard/sellerhome")}
+                 onClick={()=>navigate.push("/templates")}
                 className="inline-flex items-center bg-cyan-900 hover:bg-cyan-800 shadow-xl text-white font-bold py-3 px-8 rounded text-xl">
                   <span>Get Started</span>
                   <svg
@@ -46,7 +46,7 @@ function TopSection() {
                   </svg>
                 </button>
                 <button 
-                  onClick={()=>navigate.push("auth/login")}
+                  onClick={()=>navigate.push("/dashboard/sellerhome")}
                  className="inline-flex items-center bg-white shadow-xl hover:bg-slate-300 text-gray-700 font-bold py-3 px-8 rounded text-xl">
                   <span>Earning</span>
                   <svg
