@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import alert from "../../Services/Alert";
+axios.defaults.withCredentials = false;
 export const uploadImage = async ( img, cb, setProgress, isFile) => {
   console.log("axios",axios.interceptors)
   const options = {
