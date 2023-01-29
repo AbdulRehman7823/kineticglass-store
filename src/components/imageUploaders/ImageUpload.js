@@ -2,14 +2,16 @@ import axios from "axios";
 import { useState } from "react";
 import alert from "../../Services/Alert";
 export const uploadImage = async ( img, cb, setProgress, isFile) => {
+  console.log("axios",axios.interceptors)
   const options = {
     onUploadProgress: (progressEvent) => {
       const { loaded, total } = progressEvent;
       let precentage = Math.floor((loaded * 100) / total);
       if (precentage < 100) setProgress(precentage);
-    },
+    }, 
   };
   console.log(setProgress);
+  
   if (img != null) {
     const data = new FormData();
     data.append("file", img);

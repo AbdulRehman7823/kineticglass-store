@@ -47,10 +47,10 @@ function AddComponent() {
 
   const MarkedSvg = () => {
     return (
-      <span class="flex items-center justify-center w-10 h-10 bg-cyan-200 rounded-full lg:h-12 lg:w-12 dark:bg-blue-800 shrink-0">
+      <span className="flex items-center justify-center w-10 h-10 bg-cyan-700 rounded-full lg:h-12 lg:w-12 dark:bg-blue-800 shrink-0">
         <svg
           aria-hidden="true"
-          class="w-5 h-5 text-blue-600 lg:w-6 lg:h-6 dark:text-blue-300"
+          className="w-5 h-5 text-white lg:w-6 lg:h-6 dark:text-blue-300"
           fill="currentColor"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
@@ -75,11 +75,21 @@ function AddComponent() {
   };
   const handleDescription = (e) => {
     e.preventDefault();
+    if(fdata.siteName===""
+    ||fdata.siteDescription===""){
+      alert.showErrorAlert("All details are required");
+      return;
+    }
     setDescription(true);
   };
 
   const handleUpload = (e) => {
     e.preventDefault();
+    if(fdata.siteSourceCode===""
+    || fdata.siteImg===""){
+      alert.showErrorAlert("All details are required!");
+      
+    }
     setUploading(true);
     console.log(fdata);
   };
@@ -111,41 +121,41 @@ function AddComponent() {
   return (
     <div className="flex flex-col justify-center w-full items-center h-2/3">
       <div className="w-2/3 items-center justify-center  mt-32">
-        <ol class="flex flex-row items-center justify-center w-full">
+        <ol className="flex flex-row items-center justify-center w-full">
           <li
-            class={`flex w-full items-center text-blue-600 dark:text-blue-500 after:content-[''] after:w-full after:h-1 after:border-b ${
+            className={`flex w-full items-center text-blue-600 dark:text-blue-500 after:content-[''] after:w-full after:h-1 after:border-b ${
               description ? "after:border-cyan-200" : "after:border-gray-100"
             } after:border-4 after:inline-block dark:after:border-blue-800`}
           >
             {description ? (
               <MarkedSvg></MarkedSvg>
             ) : (
-              <span class="flex items-center justify-center w-10 h-10 bg-cyan-50 rounded-full lg:h-12 lg:w-12 dark:bg-blue-800 shrink-0">
+              <span className="flex items-center justify-center w-10 h-10 bg-cyan-50 rounded-full lg:h-12 lg:w-12 dark:bg-blue-800 shrink-0">
                 <MdDescription className="text-gray-500 text-2xl" />
               </span>
             )}
           </li>
           <li
-            class={`flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b ${
+            className={`flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b ${
               uploading ? "after:border-cyan-200" : "after:border-gray-100"
             }  after:border-4 after:inline-block dark:after:border-gray-700`}
           >
             {uploading ? (
               <MarkedSvg></MarkedSvg>
             ) : (
-              <span class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 dark:bg-gray-700 shrink-0">
+              <span className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 dark:bg-gray-700 shrink-0">
                 <FaCloudUploadAlt className="text-gray-500 text-2xl" />
               </span>
             )}
           </li>
-          <li class="flex items-center ">
+          <li className="flex items-center ">
             {deployment ? (
               <MarkedSvg></MarkedSvg>
             ) : (
-              <span class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 dark:bg-gray-700 shrink-0">
+              <span className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 dark:bg-gray-700 shrink-0">
                 <svg
                   aria-hidden="true"
-                  class="w-5 h-5 text-gray-500 lg:w-6 lg:h-6 dark:text-gray-100"
+                  className="w-5 h-5 text-gray-500 lg:w-6 lg:h-6 dark:text-gray-100"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -252,16 +262,16 @@ function AddComponent() {
                       <input type="file" onChange={uploadFile}></input>
 
                       {progress > 0 ||
-                        (progress == 100 && (
-                          <div class="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
+                        progress == 100 && (
+                          <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
                             <div
-                              class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
+                              className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
                               style={{ width: progress + "%" }}
                             >
                               {progress}
                             </div>
                           </div>
-                        ))}
+                        )}
                     </label>
                   ) : (
                     <img
@@ -338,16 +348,16 @@ function AddComponent() {
         {description && uploading && !deployment ? (
           <div className="flex flex-col mt-12">
             <div className="items-left">
-              <label class="relative inline-flex items-center mb-4 cursor-pointer">
+              <label className="relative inline-flex items-center mb-4 cursor-pointer">
                 <input
                   type="checkbox"
                   value=""
-                  class="sr-only peer"
+                  className="sr-only peer"
                   checked={deployHere}
                   onChange={() => setDeployHere(!deployHere)}
                 />
-                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                   Deploye Here
                 </span>
               </label>
@@ -358,7 +368,7 @@ function AddComponent() {
                 <h1 className="text-cyan-800 text-xl">How to upload?</h1>
                 <p className="text-gray-600 text-sm">
                   Go to your react or next project run command{" "}
-                  <code class="bg-gray-600 text-white rounded-lg px-4 py-1">
+                  <code className="bg-gray-600 text-white rounded-lg px-4 py-1">
                     {"npm build"}
                   </code>
                   . then you will get a build upload it here!

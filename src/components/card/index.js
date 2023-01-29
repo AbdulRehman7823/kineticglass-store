@@ -1,26 +1,40 @@
+import Link from "next/link";
 import React from "react";
 
-function Card() {
+
+function Card({template}) {
+
+  template = {
+    siteName:"Kinetic Glass",
+    siteLink:"https://storybook-kinetic-glass.netlify.app",
+    siteDescription:"Kinetic glass is a React Ui library",
+    sitePrice:50,
+  }
+
   return (
-    <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-xl dark:bg-gray-800 dark:border-gray-700 my-4 mx-2">
       <a href="#">
-        <img class="rounded-t-lg" src="/docs/images/blog/image-1.jpg" alt="" />
+        <img class="rounded-t-lg" src={template.siteImage? template.siteImage : "/images/tmp.jpg"} alt="" />
       </a>
       <div class="p-5">
-        <a href="#">
-          <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-            Noteworthy technology acquisitions 2021
+        <a href={template.siteLink}>
+          <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-700 dark:text-white">
+            {template.siteName}
           </h5>
         </a>
+        <h2 className="text-cyan-900 text-2xl font-bold">
+          {template.sitePrice}$
+        </h2>
         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-          Here are the biggest enterprise technology acquisitions of 2021 so
-          far, in reverse chronological order.
+         {template.siteDescription}
         </p>
+        
+        <div className="flex flex-row justify-between ">
         <a
-          href="#"
-          class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          href={template.siteLink}
+          class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-cyan-800 rounded-md hover:bg-cyan-700 focus:ring-4 focus:outline-none focus:ring-cyan-600 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ringa-cyan-800"
         >
-          Read more
+          Live Preview
           <svg
             aria-hidden="true"
             class="w-4 h-4 ml-2 -mr-1"
@@ -35,6 +49,11 @@ function Card() {
             ></path>
           </svg>
         </a>
+        <Link  className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-cyan-800 rounded-md hover:bg-cyan-700 focus:ring-4 focus:outline-none focus:ring-cyan-600 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ringa-cyan-800"
+        href="auth/login">
+          Purchase
+        </Link>
+        </div>
       </div>
     </div>
   );

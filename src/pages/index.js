@@ -7,6 +7,8 @@ import TopSection from "@/components/TopSection/TopSection";
 import ShowCase from "@/components/showcase";
 import { useRouter } from "next/router";
 import { ClimbingBoxLoader } from "react-spinners";
+import Features from "@/components/Features";
+import Footer from "@/components/Footer/Footer";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -35,6 +37,8 @@ export default function Home() {
       <Navbar></Navbar>
       <TopSection></TopSection>
       <ShowCase></ShowCase>
+      <Features></Features>
+      <Footer></Footer>
       </div>
     }
     </div>
