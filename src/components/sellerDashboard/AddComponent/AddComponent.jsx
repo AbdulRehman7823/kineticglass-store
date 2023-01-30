@@ -6,26 +6,31 @@ import FileUploader from "../../imageUploaders/FileUploader";
 import convertImageToBase64 from "../../imageUploaders/ImageBase64";
 import { uploadImage } from "../../imageUploaders/ImageUpload";
 import alert from "../../../Services/Alert";
+import axios from "axios";
+import authServices from "@/Services/AuthServices";
 function AddComponent() {
   const [description, setDescription] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [deployment, setDeployment] = useState(false);
   const [deployHere, setDeployHere] = useState(false);
+  const [urlField, setUrlField] = useState(false);
 
   const [imgUrl, setImgUrl] = React.useState();
   const [iurl, setIurl] = React.useState("");
   const [fileUrl, setFileUrl] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [progress, setProgress] = React.useState(0);
-  const [fdata, setData] = useState({
+  const [data, setData] = useState({
+    siteId:"",
     siteName: "",
-    siteDesc: "",
-    siteImg: "",
-    siteSourceCode: "",
-    siteLink: "",
+    siteDescription: "",
+    sitePrice: 0,
+    siteImage: "",
+    siteUrl: "",
+    siteSourceCode:""
   });
   const handleFormData = (key, value) => {
-    setData({ ...fdata, [key]: value });
+    setData({ ...data, [key]: value });
   };
   async function uploadFile(e) {
     setProgress(0);
@@ -65,18 +70,10 @@ function AddComponent() {
     );
   };
 
-  const data = {
-    siteName: "",
-    siteDescription: "",
-    sitePrice: 0,
-    siteImage: "",
-    siteZip: "",
-    siteUrl: "",
-  };
   const handleDescription = (e) => {
     e.preventDefault();
-    if(fdata.siteName===""
-    ||fdata.siteDescription===""){
+    if(data.siteName===""
+    ||data.siteDescription===""){
       alert.showErrorAlert("All details are required");
       return;
     }
@@ -85,13 +82,13 @@ function AddComponent() {
 
   const handleUpload = (e) => {
     e.preventDefault();
-    if(fdata.siteSourceCode===""
-    || fdata.siteImg===""){
+    if(data.siteSourceCode===""
+    || data.siteImage===""){
       alert.showErrorAlert("All details are required!");
       
     }
     setUploading(true);
-    console.log(fdata);
+    console.log(data);
   };
 
   const handleDeploy = (e) => {
@@ -99,6 +96,19 @@ function AddComponent() {
     setDeploying(true);
   };
 
+  const handleSubmit = (e) => {
+    if(data.siteUrl!==""){
+      console.log(data);
+      axios.post("http://localhost:4000/api/site/"+authServices.getLoggedInUser()._id,data).then(res=>{
+        alert.showSuccessAlert(res.data.message);
+      }).catch(err=>{
+        alert.showErrorAlert(err.message);
+      })
+      
+    }else{
+      alert.showErrorAlert("Site url is required");
+    }
+  }
   const onDrop = (acceptedFiles, rejectedFiles, imgName) => {
     console.log(imgName);
     if (rejectedFiles.length > 0) {
@@ -109,7 +119,8 @@ function AddComponent() {
         if (success) {
           uploadImage(result, (url, success) => {
             if (success) {
-              handleFormData("siteImg", url);
+              setIurl(url);
+              handleFormData("siteImage", url);
               setImgUrl(acceptedFiles[0].name);
             }
           });
@@ -185,8 +196,23 @@ function AddComponent() {
                 className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-cyan-800
                   focus:bg-white focus:outline-none"
                 required
-                value={fdata.siteName}
+                value={data.siteName}
                 onChange={(e) => handleFormData("siteName", e.target.value)}
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-gray-700">Your Site Price</label>
+              <input
+                type="number"
+                name=""
+                id=""
+                placeholder="Enter Your Site Price in $"
+                minlength="6"
+                className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-cyan-800
+                  focus:bg-white focus:outline-none"
+                required
+                value={data.sitePrice}
+                onChange={(e) => handleFormData("sitePrice", e.target.value)}
               />
             </div>
 
@@ -202,8 +228,8 @@ function AddComponent() {
                 rows="4"
                 className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:border-cyan-800 focus:outline-none "
                 placeholder="Write your Site Description here..."
-                value={fdata.siteDesc}
-                onChange={(e) => handleFormData("siteDesc", e.target.value)}
+                value={data.siteDescription}
+                onChange={(e) => handleFormData("siteDescription", e.target.value)}
               ></textarea>
               <button
                 type="button"
@@ -231,7 +257,7 @@ function AddComponent() {
                 </p>
                 {/* source code upload */}
                 <div className="flex items-center justify-center w-full mr-2 mt-4">
-                  {iurl == "" ? (
+                
                     <label
                       for="dropzone-file"
                       className="px-6 py-2 flex flex-col items-center justify-center w-full h-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
@@ -261,8 +287,7 @@ function AddComponent() {
                       </div>
                       <input type="file" onChange={uploadFile}></input>
 
-                      {progress > 0 ||
-                        progress == 100 && (
+                      {progress > 0  && (
                           <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
                             <div
                               className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
@@ -273,13 +298,7 @@ function AddComponent() {
                           </div>
                         )}
                     </label>
-                  ) : (
-                    <img
-                      className=" w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-                      src={iurl}
-                      alt="no image"
-                    />
-                  )}
+                  
                 </div>
               </div>
               <div className="flex flex-col justify-around">
@@ -373,7 +392,11 @@ function AddComponent() {
                   </code>
                   . then you will get a build upload it here!
                 </p>
-                <NetlifyDeployer></NetlifyDeployer>
+                <NetlifyDeployer
+                data={data}
+                setUrlField = {setUrlField}
+                urlField={urlField}
+                />
               </div>
             ) : (
               <div>
@@ -406,7 +429,6 @@ function AddComponent() {
                     name=""
                     id=""
                     placeholder="Enter Your URL"
-                    minlength="6"
                     className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-cyan-800
                   focus:bg-white focus:outline-none"
                     value={data.siteUrl}
@@ -419,7 +441,8 @@ function AddComponent() {
             {!deployHere ? (
               <button
                 type="button"
-                onClick={handleUpload}
+                onClick={handleSubmit}
+                dataHandler={handleSubmit}
                 className="w-2/5 block bg-cyan-800 shadow-lg  hover:bg-cyan-700 transition duration-150 ease-in-out focus:bg-cyan-900 text-white font-semibold rounded-lg
             px-4 py-3 mt-6"
               >
@@ -431,6 +454,16 @@ function AddComponent() {
           </div>
         ) : (
           <></>
+        )}
+        {urlField && (
+          <button
+                type="button"
+                onClick={handleSubmit}
+                className="w-full block bg-cyan-800 shadow-lg  hover:bg-cyan-700 transition duration-150 ease-in-out focus:bg-cyan-900 text-white font-semibold rounded-lg
+            px-4 py-3 mt-6"
+              >
+                You app is Ready Click here to Submit
+              </button>
         )}
       </div>
     </div>

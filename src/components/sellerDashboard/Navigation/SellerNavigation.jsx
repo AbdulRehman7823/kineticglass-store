@@ -1,7 +1,7 @@
 import React from "react";
 import { AiFillCaretLeft } from "react-icons/ai";
 import { MdDashboard, MdLibraryAdd, MdHelpCenter } from "react-icons/md";
-import { FaHome } from "react-icons/fa";
+import { FaHome,FaHandshake } from "react-icons/fa";
 import {RiDeleteBin6Fill,RiLogoutBoxFill} from "react-icons/ri"
 import {GiProgression} from "react-icons/gi"
 import { useRouter } from 'next/router'
@@ -31,15 +31,20 @@ function SellerNavigation({ children }) {
       icon: <MdLibraryAdd />,
     },
     {
+      title: "Your Templates",
+      link: "/dashboard/templates",
+      icon: <RiDeleteBin6Fill />,
+    },
+    {
       title: "Delete Components",
       link: "/dashboard/sellerdelete",
       icon: <RiDeleteBin6Fill />,
     },
     
     {
-        title: "Help?",
-        link: "/dashboard/sellerhelp",
-        icon: <MdHelpCenter />,
+        title: "Contribution",
+        link: "/dashboard/sellercontribution",
+        icon: <FaHandshake />,
         
       },
     {

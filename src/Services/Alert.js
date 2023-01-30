@@ -2,6 +2,7 @@ import { toast } from "react-toastify";
 class Alert {
   constructor() {}
   showSuccessAlert = (msg) => {
+    
     toast.success(msg, {
       position: toast.POSITION.BOTTOM_RIGHT,
     });

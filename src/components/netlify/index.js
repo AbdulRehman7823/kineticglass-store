@@ -4,11 +4,10 @@ import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
 import alert from "@/Services/Alert";
 import { ClockLoader } from "react-spinners";
 
-const NetlifyDeployer = () => {
-  const [siteName, setSiteName] = useState("storybook-kinetic-glass");
+const NetlifyDeployer = ({data,urlField,setUrlField}) => {
+  const [siteName,setSiteName] = useState(data.siteName);
   const [buildFolder, setBuildFolder] = useState(null);
   const token = "0ZM-0XfbmXqf0iLPvQXAtAeXgscbX3ss8N5_U0I49sk";
-
   const [createLoading, setCreateLoading] = useState(false);
   const [deployLoading, setDeployLoading] = useState(false);
 
@@ -28,9 +27,11 @@ const NetlifyDeployer = () => {
           },
         }
       );
-      const siteId = res.data.id;
+     const siteId = res.data.id;
+      data.siteId=siteId
       setCreateLoading(false);
       await deployBuild(siteId, buildFolder);
+      await getSiteDetails(siteId);
       alert.showSuccessAlert("Build Successfully Deployed!");
     } catch (error) {
       console.error(error);
@@ -41,8 +42,6 @@ const NetlifyDeployer = () => {
   const deployBuild = async (siteId, buildFolder) => {
     try {
       setDeployLoading(true);
-      const formData = {};
-      console.log(formData);
       await axios
         .post(
           `https://api.netlify.com/api/v1/sites/${siteId}/deploys`,
@@ -65,6 +64,40 @@ const NetlifyDeployer = () => {
       setDeployLoading(false);
     }
   };
+
+  const getSiteDetails = async (siteId) => {
+
+    await axios.get(`https://api.netlify.com/api/v1/sites/${siteId}`,
+    {
+      headers: {
+        "Content-Type": `application/json`,
+        Authorization: `Bearer ${token}`,
+      },
+    }).then(res=>{
+      console.log(res)
+      data.siteId = siteId;
+      data.siteImage = res.data.screenshot_url;
+      data.siteUrl = res.data.url;
+      setUrlField(true);
+      return res.data;
+    }).then(resData=>{
+      if(resData.screenshot_url!==null){
+         data.siteUrl = resData.screenshot_url;
+         return resData.screenshot_url;
+      }else{
+        return resData.screenshot_url;
+      }
+    }).then(screenshotUrl=>{
+      console.log(screenshotUrl);
+      data.siteUrl = screenshotUrl;
+    })
+    
+    
+    .catch(err=>{
+      alert.showErrorAlert("There is some Error in your Zip folder");
+      console.log(err);
+    })
+  }
 
   const handleFileSelect = (e) => {
     setBuildFolder(e.target.files[0]);
@@ -103,14 +136,14 @@ const NetlifyDeployer = () => {
                 onChange={handleFileSelect}
               />
 
-              <button
+              {!urlField&&<button
                 type="button"
                 onClick={handleSubmit}
                 className="w-2/5 block bg-cyan-800 shadow-lg  hover:bg-cyan-700 transition duration-150 ease-in-out focus:bg-cyan-900 text-white font-semibold rounded-lg
             px-4 py-3 mt-6"
               >
                 Deploy
-              </button>
+              </button>}
             </div>
           )}
         </>
