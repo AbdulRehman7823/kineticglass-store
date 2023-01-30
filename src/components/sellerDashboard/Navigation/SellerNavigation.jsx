@@ -5,7 +5,7 @@ import { FaHome,FaHandshake } from "react-icons/fa";
 import {RiDeleteBin6Fill,RiLogoutBoxFill} from "react-icons/ri"
 import {GiProgression} from "react-icons/gi"
 import { useRouter } from 'next/router'
-
+import {HiTemplate} from 'react-icons/hi'
 
 
 import SellerTopNavigation from "./SellerTopNavigation";
@@ -33,7 +33,7 @@ function SellerNavigation({ children }) {
     {
       title: "Your Templates",
       link: "/dashboard/templates",
-      icon: <RiDeleteBin6Fill />,
+      icon: <HiTemplate />,
     },
     {
       title: "Delete Components",
