@@ -78,7 +78,7 @@ function Card({ data,isSeller,isDelete }) {
       receiverId:data.userId,
       price:data.sitePrice,
       name:data.siteName,
-      siteId:data.siteId
+      siteId:data._id
      }
      paymentServices.doPayment(object).then(response => {
       console.log(response);

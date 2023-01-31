@@ -12,7 +12,7 @@ const ForgotPassword = () => {
 		e.preventDefault();
 		setLoading(true);
 		try {
-			const url = `http://localhost:4000/api/password-reset`;
+			const url = `https://kg-server-production.up.railway.app/api/password-reset`;
 			const { data } = await axios.post(url, { email });
 			setMsg(data.message);
 			setError("");

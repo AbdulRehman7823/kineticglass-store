@@ -15,7 +15,7 @@ const EmailVerify = () => {
         if (userId == undefined || token == undefined) {
           return;
         }
-        const url = `http://localhost:4000/api/auth/${userId}/verify/${token}`;
+        const url = `https://kg-server-production.up.railway.app/api/auth/${userId}/verify/${token}`;
         const { data } = await axios.get(url);
         console.log(data);
         setValidUrl(true);

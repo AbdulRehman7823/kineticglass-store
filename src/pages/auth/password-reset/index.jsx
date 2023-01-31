@@ -40,7 +40,7 @@ const PasswordReset = () => {
 				if (userId == undefined || token == undefined) {
 				return;
 				}
-				const urllink = `http://localhost:4000/api/password-reset/${userId}/${token}`;
+				const urllink = `https://kg-server-production.up.railway.app/api/password-reset/${userId}/${token}`;
 				setUrl(urllink);
 				await axios.get(url);
 				setValidUrl(true);
