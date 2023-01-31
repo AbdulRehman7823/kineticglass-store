@@ -1,10 +1,11 @@
 import alert from '@/Services/Alert';
 import templateServices from '@/Services/TemplateServices';
+import Image from 'next/image';
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { BsFillCloudArrowDownFill} from 'react-icons/bs';
-function index() {
+function PaymentSuccess() {
   const router = useRouter();
 
   const [site,setSite] = useState();
@@ -35,7 +36,7 @@ function index() {
   return (
     <div className="h-screen w-full flex flex-col justify-center items-center ">
         <div className='w-64'>
-        <img src="/images/verified.png" />
+        <Image src="/images/verified.png" />
         </div>
         <p className="text-gray-700 text-xl text-bold my-4">The Payment is done successfully </p>
         <div onClick={handleDownload} className="flex my-4 flex-row w-96 items-center justify-between px-12 py-6 rounded-lg shadow-xl text-white bg-cyan-900 cursor-pointer hover:bg-cyan-700">
@@ -50,4 +51,4 @@ function index() {
   )
 }
 
-export default index
+export default PaymentSuccess

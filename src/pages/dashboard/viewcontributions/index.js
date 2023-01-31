@@ -6,7 +6,7 @@ import contributionServices from '@/Services/Contribution'
 import React, { useEffect, useState } from 'react'
 import { ClimbingBoxLoader } from 'react-spinners';
 
-function index() {
+function ViewContributions() {
     const [loading,setLoading] = useState(false);
 
     const [contributions,setContributions] = useState([]);
@@ -40,4 +40,4 @@ function index() {
   )
 }
 
-export default index
+export default ViewContributions

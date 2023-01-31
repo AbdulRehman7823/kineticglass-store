@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import styles from "./style.module.css";
+import Image from "next/image";
 
 const EmailVerify = () => {
   const [validUrl, setValidUrl] = useState(true);
@@ -31,7 +32,7 @@ const EmailVerify = () => {
     <div>
       {validUrl ? (
         <div className={styles.container}>
-          <img
+          <Image
             src="/images/verified.png"
             alt="success_img"
             className={styles.success_img}

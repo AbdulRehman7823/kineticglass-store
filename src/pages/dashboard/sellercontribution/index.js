@@ -10,11 +10,10 @@ import { ClimbingBoxLoader } from 'react-spinners';
 
 
 
-function index() {
+function Index() {
 
   const router = useRouter();
   const [loading,setLoading] = useState(false);
-
   const [code,setCode]= useState();
     const [data,setData] = useState({
         title:"",
@@ -95,4 +94,4 @@ function index() {
   )
 }
 
-export default index
+export default Index

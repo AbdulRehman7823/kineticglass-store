@@ -3,6 +3,7 @@ import authServices from "@/Services/AuthServices";
 import paymentServices from "@/Services/PaymentServices";
 import templateServices from "@/Services/TemplateServices";
 import axios from "axios";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -13,9 +14,13 @@ function Card({ data,isSeller,isDelete }) {
   const [loading,setLoading] = useState(false);
 
   const [rimage,setrImage] = useState("");
+
+
   const token = "0ZM-0XfbmXqf0iLPvQXAtAeXgscbX3ss8N5_U0I49sk";
   const router = useRouter();
 
+
+  
   useEffect(()=>{
     const fetchData = async () => {
       console.log(data);
@@ -93,7 +98,7 @@ function Card({ data,isSeller,isDelete }) {
   return (
     <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-xl dark:bg-gray-800 dark:border-gray-700 my-4 mx-2">
       <a href="#">
-        <img
+        <Image
           class="rounded-t-lg"
           src={data.siteImage ? data.siteImage : "/images/tmp.jpg"}
           alt=""
@@ -116,6 +121,7 @@ function Card({ data,isSeller,isDelete }) {
           <a
             href={data.siteUrl}
             target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex cursor-pointer items-center px-4 py-2 text-sm font-medium text-center text-white bg-cyan-800 rounded-md hover:bg-cyan-700 focus:ring-4 focus:outline-none focus:ring-cyan-600 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ringa-cyan-800"
           >
             Live Preview

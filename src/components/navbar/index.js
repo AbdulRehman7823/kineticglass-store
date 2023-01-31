@@ -4,6 +4,7 @@ import { BsFillMenuButtonWideFill } from "react-icons/bs";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Image from "next/image";
 
 
 
@@ -78,7 +79,7 @@ export default function Navbar() {
                 <li>
                   <div>
                     {user.img ? (
-                      <img
+                      <Image
                         class="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
                         src={user.img}
                         alt="Bordered avatar"

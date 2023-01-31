@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import authServices from '@/Services/AuthServices';
 import { useEffect } from 'react';
 
-function index() {
+function Index() {
   const router = useRouter();
   useEffect(() => {
     if (!authServices.isLoggedIn()) {
@@ -22,4 +22,4 @@ function index() {
   )
 }
 
-export default index;
+export default Index;

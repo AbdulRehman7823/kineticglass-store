@@ -4,7 +4,7 @@ import authServices from "@/Services/AuthServices";
 import transactionServices from "@/Services/TransactionServices";
 import React, { useEffect, useState } from "react";
 
-function index() {
+function Transactions() {
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
@@ -77,4 +77,4 @@ function index() {
   );
 }
 
-export default index;
+export default Transactions;

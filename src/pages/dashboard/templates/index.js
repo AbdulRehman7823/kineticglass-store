@@ -7,7 +7,7 @@ import React, { useState } from "react";
 import { ClimbingBoxLoader } from "react-spinners";
 import templateService from "../../../Services/TemplateServices";
 
-function index() {
+function Templates() {
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(false);
   React.useEffect( () => {
@@ -39,4 +39,4 @@ function index() {
   );
 }
 
-export default index;
+export default Templates;
