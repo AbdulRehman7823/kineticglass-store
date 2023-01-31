@@ -25,11 +25,11 @@ function Signup() {
 
   //google Authentication
   async function handleGoogleLogin() {
-    signIn("google", { callbackUrl: "http://localhost:3000" });
+    signIn("google", { callbackUrl: process.env.CLIENT_URL });
   }
   //github authentication
   async function handleGithubLogin() {
-    signIn("github", { callbackUrl: "http://localhost:3000" });
+    signIn("github", { callbackUrl: process.env.CLIENT_URL });
   }
 
   //validations
