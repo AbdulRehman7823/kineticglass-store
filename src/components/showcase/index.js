@@ -1,7 +1,21 @@
-import React from "react";
+import alert from "@/Services/Alert";
+import templateServices from "@/Services/TemplateServices";
+import React, { useEffect, useState } from "react";
 import CardList from "../cardlist";
 
 function ShowCase() {
+
+  const [templates,setTemplates] = useState([]);
+  useEffect(()=>{
+
+    templateServices.getAllTemplates().then(res=>{
+           setTemplates(res);
+    }).catch(err=>{
+      alert.showErrorAlert(err.message);
+    })
+  },[]);
+
+
   const Search = () => {
     return (
       <form className="w-2/3">
@@ -50,7 +64,7 @@ function ShowCase() {
   return (
     <div className="w-full flex flex-col items-center justify-center p-12">
       <Search></Search>
-      <CardList></CardList>
+      <CardList templates={templates}/>
       <button className="px-12 py-4 text-white font-bold bg-cyan-800 rounded-lg shadow-xl hover:bg-cyan-700 ">Explore more</button>
       <hr className="w-96 h-1 my-8 bg-cyan-900 border-0 rounded dark:bg-gray-700"/>
 

@@ -47,6 +47,12 @@ function SellerNavigation({ children }) {
         icon: <FaHandshake />,
         
       },
+      {
+        title: "Your Contributions",
+        link: "/dashboard/viewcontributions",
+        icon: <FaHandshake />,
+        
+      },
     {
       title: "Logout",
       link: "/",
@@ -93,7 +99,7 @@ function SellerNavigation({ children }) {
                   }}
                 key={index}
                 className={`text-cyan-900 text-md flex items-center gap-x-4 cursor-pointer p-2 hover:shadow-lg duration-150 hover:bg-cyan-700 hover:text-gray-100 rounded-md  ${
-                  menu.spacing ? "mt-44" : "mt-6"
+                  menu.spacing ? "mt-24" : "mt-6"
                 }`}
               >
                 <span className="text-2xl block float-left ">

@@ -1,13 +1,21 @@
 import ReactLivePreview from '@/components/LivePreview/ReactLivePreview';
 import SellerNavigation from '@/components/sellerDashboard/Navigation/SellerNavigation'
+import alert from '@/Services/Alert';
+import authServices from '@/Services/AuthServices';
+import contributionServices from '@/Services/Contribution';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react'
+import { ClimbingBoxLoader } from 'react-spinners';
 
 
 
 
 function index() {
 
+  const router = useRouter();
+  const [loading,setLoading] = useState(false);
 
+  const [code,setCode]= useState();
     const [data,setData] = useState({
         title:"",
         description:"",
@@ -15,7 +23,22 @@ function index() {
     });
 
     const handleSubmit = ()=>{
-
+      setLoading(true);
+      console.log(code);
+      const newObject = {
+        code:code,
+        title:data.title,
+        description:data.description
+      }
+      console.log(newObject);
+       contributionServices.addContribution(authServices.getLoggedInUser()._id,newObject).then(response=>{
+           alert.showSuccessAlert("Your Contribution is added");
+           setLoading(false);
+           router.push("/dashboard/viewcontributions");
+       }).catch(error=>{
+        alert.showErrorAlert("There is some Error"+error.message);
+        setLoading(false);
+       })
     }
     const handleFormData = (key, value) => {
         setData({ ...data, [key]: value });
@@ -23,6 +46,7 @@ function index() {
   return (
     <SellerNavigation>
         <div className="flex justify-center items-center w-full h-full ">
+          {!loading?
       <div className="w-2/3 mt-26 flex-col w-full items-center justify-center ">
             <div className="mt-4">
               <label className="block text-gray-700">Any Title</label>
@@ -35,8 +59,8 @@ function index() {
                 className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-cyan-800
                   focus:bg-white focus:outline-none"
                 required
-                value={data.siteName}
-                onChange={(e) => handleFormData("siteName", e.target.value)}
+                value={data.title}
+                onChange={(e) => handleFormData("title", e.target.value)}
               />
             </div>
     
@@ -50,11 +74,12 @@ function index() {
               <textarea
                 id="details"
                 rows="2"
+                value={data.description}
                 className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:border-cyan-800 focus:outline-none "
                 placeholder="Write your Description here..."
-                onChange={(e) => handleFormData("siteDescription", e.target.value)}
+                onChange={(e) => handleFormData("description", e.target.value)}
               ></textarea>
-              <ReactLivePreview></ReactLivePreview>
+              <ReactLivePreview setCode = {setCode} pCode={code}></ReactLivePreview>
               <button
                 type="button"
                 onClick={handleSubmit}
@@ -64,7 +89,7 @@ function index() {
                 Contribute
               </button>
             </div>
-          </div>
+          </div>:<ClimbingBoxLoader size={20} color="#005974"/>}
           </div>
     </SellerNavigation>
   )

@@ -1,19 +1,56 @@
 import authServices from "@/Services/AuthServices";
 import React, { useEffect, useState } from "react";
-import TopCard from "../Cards/TopCard";
 import {AiFillDollarCircle} from 'react-icons/ai';
 import {HiTemplate} from "react-icons/hi";
 import {GoIssueReopened} from "react-icons/go";
+import templateServices from "@/Services/TemplateServices";
+import userServices from "@/Services/UserServices";
+import alert from "@/Services/Alert";
+import paymentServices from "@/Services/PaymentServices";
+import transactionServices from "@/Services/TransactionServices";
+import { useRouter } from "next/router";
 function SellerHome() {
-  const [user, setUser] = useState({});
-  useEffect(() => {
-    setUser(authServices.getLoggedInUser());
-  }, []);
+  const [user,setUser] = useState();
+  const [totalTemplates,setTotalTemplates] = useState(0);
+  const router = useRouter();
+  useEffect(()=>{
+    userServices.getUserById(authServices.getLoggedInUser()._id).then(response=>{
+      setUser(response)
+    }).catch(error=>{
+      alert.showErrorAlert(error.message);
+    });
+
+    templateServices.getAllUserTemplates(authServices.getLoggedInUser()._id).then(response=>{
+         setTotalTemplates(response.length);
+    }).catch(error=>{
+      alert.showErrorAlert(error.message);
+    })
+
+    console.log("user",user);
+    
+  },[]);
+
+
+  
+  const withdraw = ()=>{
+    if(user.accountId){
+
+    }else{
+
+      paymentServices.managePayout(authServices.getLoggedInUser()._id).then(response=>{
+        console.log("success",response);
+      }).catch(error=>{
+        console.log("error",error);
+        alert.showErrorAlert(error.message);
+      })
+    }
+    
+  }
 
   return (
     <div className="flex flex-col w-full h-full justify-top items-center">
       <h1 className="text-gray-700 text-2xl items-center text-center my-8">
-        Welcome Back {user.username}
+        Welcome Back {user && user.username}
       </h1>
       <div className="flex flex-row w-full flex-wrap justify-around">
         {/*Total sales card*/}
@@ -26,9 +63,9 @@ function SellerHome() {
             </h5>
           </a>
           <h1 class="mb-3 font-bold text-2xl text-cyan-800 dark:text-gray-400">
-            0$
+            {user && user.totalSales}
           </h1>
-          <button className="bg-cyan-800 text-white px-4 py-2 rounded-md shadow-xl float-right">
+          <button onClick={()=>{router.push("/dashboard/transactions")}} className="bg-cyan-800 text-white px-4 py-2 rounded-md shadow-xl float-right">
             View Transactions
           </button>
         </div>
@@ -37,7 +74,7 @@ function SellerHome() {
         
         <div class="max-w-sm w-96 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
           <svg
-            class="w-10 h-10 mb-2 text-green-500 dark:text-gray-400"
+            class="w-10 h-10 mb-2 text-cyan-800 dark:text-gray-400"
             aria-hidden="true"
             fill="currentColor"
             viewBox="0 0 20 20"
@@ -56,11 +93,15 @@ function SellerHome() {
             </h5>
           </a>
           <h1 class="mb-3 font-bold text-2xl text-cyan-800 dark:text-gray-400">
-            0$
+            {user && user.withdrawEarning }$
           </h1>
-          <button className="bg-cyan-800 text-white px-4 py-2 rounded-md shadow-xl float-right">
+          {(user  && user.withdrawEarning>0)?
+          <button onClick={withdraw} className="bg-cyan-800 text-white px-4 py-2 rounded-md shadow-xl float-right">
             Withdraw
-          </button>
+          </button>:
+          <button  disabled className="bg-gray-500 text-gray-600 px-4 py-2 rounded-md shadow-xl float-right">
+          Withdraw
+        </button>}
         </div>
       </div>
 
@@ -81,7 +122,8 @@ function SellerHome() {
           <p className="text-md text-gray-700">
             Uploading more Templates will increase your sales
           </p>
-          <button className="bg-cyan-800 text-white px-4 py-2 rounded-md shadow-xl float-right">
+          <h1 className="text-3xl text-cyan-700 font-bold">{totalTemplates}</h1>
+          <button onClick={()=>{router.push("/dashboard/selleradd")}} className="bg-cyan-800 text-white px-4 py-2 rounded-md shadow-xl float-right">
             Add Template
           </button>
         </div>
@@ -89,17 +131,17 @@ function SellerHome() {
         {/* */}
         
         <div class="max-w-sm w-96 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-         <GoIssueReopened className="text-red-500 text-5xl"></GoIssueReopened>
+         <GoIssueReopened className="text-cyan-800 text-5xl"></GoIssueReopened>
           <a href="#">
             <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
-              Issues
+              Contributions
             </h5>
           </a>
           <p className="text-md text-gray-700">
             Click here to check if someone has issue with your Provided Code
           </p>
-          <button className="bg-cyan-800 text-white px-4 py-2 rounded-md shadow-xl float-right">
-            View Issues
+          <button onClick={()=>{router.push("/dashboard/viewcontributions")}} className="bg-cyan-800 text-white px-4 py-2 rounded-md shadow-xl float-right">
+            View Contributions
           </button>
         </div>
       </div>

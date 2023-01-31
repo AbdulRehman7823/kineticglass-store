@@ -1,6 +1,5 @@
 import axios from "axios";
-axios.defaults.baseURL = "http://localhost:4000/api/";
-axios.defaults.withCredentials = false;
+axios.defaults.baseURL = "https://kg-server-production.up.railway.app/api/";
 
 class GenericService {
 

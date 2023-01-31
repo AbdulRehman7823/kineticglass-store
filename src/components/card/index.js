@@ -1,20 +1,28 @@
 import alert from "@/Services/Alert";
+import authServices from "@/Services/AuthServices";
+import paymentServices from "@/Services/PaymentServices";
 import templateServices from "@/Services/TemplateServices";
 import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
+import {ClipLoader} from 'react-spinners'
 function Card({ data,isSeller,isDelete }) {
  
+  const [loading,setLoading] = useState(false);
 
   const [rimage,setrImage] = useState("");
   const token = "0ZM-0XfbmXqf0iLPvQXAtAeXgscbX3ss8N5_U0I49sk";
+  const router = useRouter();
 
   useEffect(()=>{
     const fetchData = async () => {
+      console.log(data);
       try {
         if(data.siteId){
-          if(data.siteImage==null){
+          if(data.siteImage==null || data.siteImage==""){
+
            await axios
             .get(`https://api.netlify.com/api/v1/sites/${data.siteId}`, {
               headers: {
@@ -24,6 +32,7 @@ function Card({ data,isSeller,isDelete }) {
             })
             .then((res) => {
               data.siteImage = res.data.screenshot_url;
+              
               setrImage(res.data.screenshot_url);
             })
             .catch((err) => {
@@ -50,9 +59,35 @@ function Card({ data,isSeller,isDelete }) {
   const deleteHandler = ()=>{
      templateServices.deleteTemplate(data._id).then(response=>{
          alert.showSuccessAlert(response.message);
+         router.push("/dashboard/templates");
      }).catch(error=>{
       alert.showErrorAlert("Error"+error.message);
      })
+  }
+
+  const purchase = ()=>{
+    
+    if(!authServices.getLoggedInUser()){
+     router.push("/auth/login");
+     return;
+    }
+
+    setLoading(true);
+     const object = {
+      senderId:authServices.getLoggedInUser()._id,
+      receiverId:data.userId,
+      price:data.sitePrice,
+      name:data.siteName,
+      siteId:data.siteId
+     }
+     paymentServices.doPayment(object).then(response => {
+      console.log(response);
+      setLoading(false);
+      window.open(response.url);
+     }).catch(err => {
+      console.log(err);
+      setLoading(false);
+     });
   }
 
   return (
@@ -65,7 +100,7 @@ function Card({ data,isSeller,isDelete }) {
         />
       </a>
       <div class="p-5">
-        <a href={data.siteLink}>
+        <a href={data.siteUrl}>
           <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-700 dark:text-white">
             {data.siteName}
           </h5>
@@ -79,8 +114,9 @@ function Card({ data,isSeller,isDelete }) {
 
         <div className="flex flex-row justify-between ">
           <a
-            href={data.siteLink}
-            class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-cyan-800 rounded-md hover:bg-cyan-700 focus:ring-4 focus:outline-none focus:ring-cyan-600 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ringa-cyan-800"
+            href={data.siteUrl}
+            target="_blank"
+            className="inline-flex cursor-pointer items-center px-4 py-2 text-sm font-medium text-center text-white bg-cyan-800 rounded-md hover:bg-cyan-700 focus:ring-4 focus:outline-none focus:ring-cyan-600 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ringa-cyan-800"
           >
             Live Preview
             <svg
@@ -98,12 +134,13 @@ function Card({ data,isSeller,isDelete }) {
             </svg>
           </a>
           {isSeller?<></>:
-          <Link
+          loading?<ClipLoader color="#36d7b7" />:
+          <button
             className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-cyan-800 rounded-md hover:bg-cyan-700 focus:ring-4 focus:outline-none focus:ring-cyan-600 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ringa-cyan-800"
-            href="auth/login"
+            onClick={authServices.getLoggedInUser() && data.userId===authServices.getLoggedInUser()._id?()=>{}:purchase}
           >
-            Purchase
-          </Link>}
+           {authServices.getLoggedInUser() && data.userId===authServices.getLoggedInUser()._id?"Your Template":"Purchase"}
+          </button>}
 
           {isDelete && <button
             className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-cyan-800 rounded-md hover:bg-cyan-700 focus:ring-4 focus:outline-none focus:ring-cyan-600 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ringa-cyan-800"

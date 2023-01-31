@@ -4,12 +4,13 @@ import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
 import alert from "@/Services/Alert";
 import { ClockLoader } from "react-spinners";
 
-const NetlifyDeployer = ({data,urlField,setUrlField}) => {
-  const [siteName,setSiteName] = useState(data.siteName);
+const NetlifyDeployer = ({name,urlField,setUrlField,setDeployUrlField,setDeployId}) => {
+  const [siteName,setSiteName] = useState(name);
   const [buildFolder, setBuildFolder] = useState(null);
   const token = "0ZM-0XfbmXqf0iLPvQXAtAeXgscbX3ss8N5_U0I49sk";
   const [createLoading, setCreateLoading] = useState(false);
   const [deployLoading, setDeployLoading] = useState(false);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,7 +29,7 @@ const NetlifyDeployer = ({data,urlField,setUrlField}) => {
         }
       );
      const siteId = res.data.id;
-      data.siteId=siteId
+     setDeployId(siteId);
       setCreateLoading(false);
       await deployBuild(siteId, buildFolder);
       await getSiteDetails(siteId);
@@ -74,25 +75,12 @@ const NetlifyDeployer = ({data,urlField,setUrlField}) => {
         Authorization: `Bearer ${token}`,
       },
     }).then(res=>{
-      console.log(res)
-      data.siteId = siteId;
-      data.siteImage = res.data.screenshot_url;
-      data.siteUrl = res.data.url;
+      console.log(res.data.url);
+      setDeployId(siteId);
+      setDeployUrlField(res.data.url);
       setUrlField(true);
-      return res.data;
-    }).then(resData=>{
-      if(resData.screenshot_url!==null){
-         data.siteUrl = resData.screenshot_url;
-         return resData.screenshot_url;
-      }else{
-        return resData.screenshot_url;
-      }
-    }).then(screenshotUrl=>{
-      console.log(screenshotUrl);
-      data.siteUrl = screenshotUrl;
     })
-    
-    
+  
     .catch(err=>{
       alert.showErrorAlert("There is some Error in your Zip folder");
       console.log(err);
@@ -103,7 +91,6 @@ const NetlifyDeployer = ({data,urlField,setUrlField}) => {
     setBuildFolder(e.target.files[0]);
     console.log(e.target.files[0]);
   };
-
   return (
     <>
       {createLoading ? (

@@ -5,10 +5,10 @@ import { AiFillEye } from "react-icons/ai";
 import JsxParser from "react-jsx-parser";
 import { LiveProvider, LiveEditor, LiveError, LivePreview } from "react-live";
 
-function ReactLivePreview() {
+function ReactLivePreview({pCode,setCode}) {
   const [copySuccess, setCopySuccess] = React.useState("");
   const [currentCode, setCurrentCode] = React.useState(
-    `<h1>Write code here</h1>`
+    pCode
   );
   const copyToClipBoard = async () => {};
 
@@ -21,7 +21,7 @@ function ReactLivePreview() {
         </div>
       </div>
 
-      <LiveProvider code={`<h1>dddd</h1>`}>
+      <LiveProvider code={pCode}  onChange={(e) =>{console.log(e.target.value);}}>
         <div className=" w-full my-2 flex flex-col">
           <div className="border-2 border-cyan-800 p-2 rounded-xl h-32 ">
             <LivePreview />
@@ -35,7 +35,7 @@ function ReactLivePreview() {
           </div>
         </div>
         <div className="border-2 w-full border-cyan-800 p-2 rounded-xl min-h-32 bg-gray-800 ">
-        <LiveEditor />
+        <LiveEditor id="editor" onChange={(code=>setCode(code))}/>
         </div>
         <LiveError />
       </LiveProvider>

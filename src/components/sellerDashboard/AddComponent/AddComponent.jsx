@@ -8,12 +8,16 @@ import { uploadImage } from "../../imageUploaders/ImageUpload";
 import alert from "../../../Services/Alert";
 import axios from "axios";
 import authServices from "@/Services/AuthServices";
+import { useRouter } from "next/router";
 function AddComponent() {
+  const router = useRouter();
   const [description, setDescription] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [deployment, setDeployment] = useState(false);
   const [deployHere, setDeployHere] = useState(false);
   const [urlField, setUrlField] = useState(false);
+  const [deployUrlField, setDeployUrlField] = useState("");
+  const [deployId, setDeployId] = useState("");
 
   const [imgUrl, setImgUrl] = React.useState();
   const [iurl, setIurl] = React.useState("");
@@ -21,13 +25,13 @@ function AddComponent() {
   const [loading, setLoading] = React.useState(false);
   const [progress, setProgress] = React.useState(0);
   const [data, setData] = useState({
-    siteId:"",
+    siteId: "",
     siteName: "",
     siteDescription: "",
     sitePrice: 0,
     siteImage: "",
     siteUrl: "",
-    siteSourceCode:""
+    siteSourceCode: "",
   });
   const handleFormData = (key, value) => {
     setData({ ...data, [key]: value });
@@ -72,8 +76,7 @@ function AddComponent() {
 
   const handleDescription = (e) => {
     e.preventDefault();
-    if(data.siteName===""
-    ||data.siteDescription===""){
+    if (data.siteName === "" || data.siteDescription === "") {
       alert.showErrorAlert("All details are required");
       return;
     }
@@ -82,33 +85,60 @@ function AddComponent() {
 
   const handleUpload = (e) => {
     e.preventDefault();
-    if(data.siteSourceCode===""
-    || data.siteImage===""){
+    if (data.siteSourceCode === "" || data.siteImage === "") {
       alert.showErrorAlert("All details are required!");
-      
     }
     setUploading(true);
     console.log(data);
   };
 
-  const handleDeploy = (e) => {
-    e.preventDefault();
-    setDeploying(true);
+  const handleSubmit = (e) => {
+    if (deployUrlField) {
+      const newDataObject = {
+        siteId: deployId,
+        siteUrl: deployUrlField,
+        siteName: data.siteName,
+        siteImage: data.siteImage,
+        siteSourceCode: data.siteSourceCode,
+        sitePrice: data.sitePrice,
+        siteDescription: data.siteDescription,
+      };
+
+      axios
+        .post(
+          "https://kg-server-production.up.railway.app/api/site/" +
+            authServices.getLoggedInUser()._id,
+          newDataObject
+        )
+        .then((res) => {
+          alert.showSuccessAlert(res.data.message);
+          router.push("/dashboard/selleradd");
+        })
+        .catch((err) => {
+          alert.showErrorAlert(err.message);
+        });
+    } else {
+      if (data.siteUrl !== "") {
+        console.log(data);
+        axios
+          .post(
+            "https://kg-server-production.up.railway.app/api/site/" +
+              authServices.getLoggedInUser()._id,
+            data
+          )
+          .then((res) => {
+            alert.showSuccessAlert(res.data.message);
+            router.push("/dashboard/selleradd");
+          })
+          .catch((err) => {
+            alert.showErrorAlert(err.message);
+          });
+      } else {
+        alert.showErrorAlert("Site url is required");
+      }
+    }
   };
 
-  const handleSubmit = (e) => {
-    if(data.siteUrl!==""){
-      console.log(data);
-      axios.post("http://localhost:4000/api/site/"+authServices.getLoggedInUser()._id,data).then(res=>{
-        alert.showSuccessAlert(res.data.message);
-      }).catch(err=>{
-        alert.showErrorAlert(err.message);
-      })
-      
-    }else{
-      alert.showErrorAlert("Site url is required");
-    }
-  }
   const onDrop = (acceptedFiles, rejectedFiles, imgName) => {
     console.log(imgName);
     if (rejectedFiles.length > 0) {
@@ -229,7 +259,9 @@ function AddComponent() {
                 className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:border-cyan-800 focus:outline-none "
                 placeholder="Write your Site Description here..."
                 value={data.siteDescription}
-                onChange={(e) => handleFormData("siteDescription", e.target.value)}
+                onChange={(e) =>
+                  handleFormData("siteDescription", e.target.value)
+                }
               ></textarea>
               <button
                 type="button"
@@ -257,48 +289,46 @@ function AddComponent() {
                 </p>
                 {/* source code upload */}
                 <div className="flex items-center justify-center w-full mr-2 mt-4">
-                
-                    <label
-                      for="dropzone-file"
-                      className="px-6 py-2 flex flex-col items-center justify-center w-full h-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-                    >
-                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                        <svg
-                          aria-hidden="true"
-                          className="w-10 h-10 mb-3 text-gray-400"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                          ></path>
-                        </svg>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          <span className="font-semibold">
-                            Upload your Profile Image here!
-                          </span>{" "}
-                          or drag and drop
-                        </p>
-                      </div>
-                      <input type="file" onChange={uploadFile}></input>
+                  <label
+                    for="dropzone-file"
+                    className="px-6 py-2 flex flex-col items-center justify-center w-full h-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                  >
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <svg
+                        aria-hidden="true"
+                        className="w-10 h-10 mb-3 text-gray-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                        ></path>
+                      </svg>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        <span className="font-semibold">
+                          Upload your Profile Image here!
+                        </span>{" "}
+                        or drag and drop
+                      </p>
+                    </div>
+                    <input type="file" onChange={uploadFile}></input>
 
-                      {progress > 0  && (
-                          <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
-                            <div
-                              className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
-                              style={{ width: progress + "%" }}
-                            >
-                              {progress}
-                            </div>
-                          </div>
-                        )}
-                    </label>
-                  
+                    {progress > 0 && (
+                      <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
+                        <div
+                          className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
+                          style={{ width: progress + "%" }}
+                        >
+                          {progress}
+                        </div>
+                      </div>
+                    )}
+                  </label>
                 </div>
               </div>
               <div className="flex flex-col justify-around">
@@ -393,9 +423,11 @@ function AddComponent() {
                   . then you will get a build upload it here!
                 </p>
                 <NetlifyDeployer
-                data={data}
-                setUrlField = {setUrlField}
-                urlField={urlField}
+                  name={data.siteName}
+                  setUrlField={setUrlField}
+                  urlField={urlField}
+                  setDeployUrlField={setDeployUrlField}
+                  setDeployId={setDeployId}
                 />
               </div>
             ) : (
@@ -457,13 +489,13 @@ function AddComponent() {
         )}
         {urlField && (
           <button
-                type="button"
-                onClick={handleSubmit}
-                className="w-full block bg-cyan-800 shadow-lg  hover:bg-cyan-700 transition duration-150 ease-in-out focus:bg-cyan-900 text-white font-semibold rounded-lg
+            type="button"
+            onClick={(e) => handleSubmit(e)}
+            className="w-full block bg-cyan-800 shadow-lg  hover:bg-cyan-700 transition duration-150 ease-in-out focus:bg-cyan-900 text-white font-semibold rounded-lg
             px-4 py-3 mt-6"
-              >
-                You app is Ready Click here to Submit
-              </button>
+          >
+            You app is Ready Click here to Submit
+          </button>
         )}
       </div>
     </div>
