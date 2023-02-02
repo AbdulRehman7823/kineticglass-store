@@ -44,9 +44,7 @@ function AddComponent() {
       file,
       async (url, success) => {
         if (success) {
-          setFileUrl(
-            url.split("d/")[0] + "d/fl_attachment/" + url.split("d/")[1]
-          );
+          
           handleFormData("siteSourceCode", url);
         }
       },
