@@ -7,11 +7,11 @@ import Image from "next/image";
 const EmailVerify = () => {
   const [validUrl, setValidUrl] = useState(true);
   const router = useRouter();
-
+  const { userId, token } = router.query;
   useEffect(() => {
     const verifyEmailUrl = async () => {
       try {
-        const { userId, token } = router.query;
+        
         console.log(userId, token);
         if (userId == undefined || token == undefined) {
           return;
