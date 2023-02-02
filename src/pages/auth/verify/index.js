@@ -26,7 +26,7 @@ const EmailVerify = () => {
       }
     };
     verifyEmailUrl();
-  }, []);
+  }, [userId,token]);
 
   return (
     <div>
