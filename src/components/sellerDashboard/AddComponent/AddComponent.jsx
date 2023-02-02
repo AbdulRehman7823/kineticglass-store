@@ -107,7 +107,7 @@ function AddComponent() {
 
       axios
         .post(
-          "https://kg-server-production.up.railway.app/api/site/" +
+          `${process.env.SERVER_URL}/api/site/` +
             authServices.getLoggedInUser()._id,
           newDataObject
         )
@@ -123,7 +123,7 @@ function AddComponent() {
         console.log(data);
         axios
           .post(
-            "https://kg-server-production.up.railway.app/api/site/" +
+            `${process.env.SERVER_URL}/api/site/` +
               authServices.getLoggedInUser()._id,
             data
           )
@@ -373,7 +373,7 @@ function AddComponent() {
                       />
                     </label>
                   ) : (
-                    <Image
+                    <img
                       className=" w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                       src={iurl}
                       alt="no image"

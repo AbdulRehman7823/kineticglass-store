@@ -3,7 +3,6 @@ import {format} from 'date-fns';
 import {BsFillCalendarDateFill} from 'react-icons/bs'
 import { useState } from "react";
 import authServices from "@/Services/AuthServices";
-import Image from "next/image";
 
 function SellerTopNavigation() {
 
@@ -21,7 +20,7 @@ function SellerTopNavigation() {
       </div>
       <div className="flex flex-row justify-left ml-auto">
         <h1 className="m-2 text-lg hover:text-blue-500">{user?user.username:"username"}</h1>
-        <Image
+        <img
           class="w-10 h-10 rounded bg-blue-900"
           src={user?user.img:""}
           alt="https://www.w3schools.com/w3images/avatar6.png"

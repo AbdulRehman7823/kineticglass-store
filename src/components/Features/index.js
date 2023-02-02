@@ -1,23 +1,27 @@
 import React from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 function Features() {
+
+  const router = useRouter();
   return (
     <div>
       <section className="body-font">
         <div className="container px-5 py-24 mx-auto">
           <div className="flex flex-wrap w-full mb-20 flex-col items-center text-center">
             <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-skin-base">
-              Pitchfork Kickstarter Taxidermy
+              Features
             </h1>
             <p className="lg:w-1/2 w-full leading-relaxed text-gray-500">
-              Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical
-              gentrify, subway tile poke farm-to-table.
+              Kinetic Glass is complete corporation that provides all stuff related to Web user interfaces
+              
             </p>
           </div>
           <div className="flex flex-wrap -m-4">
             <div className="xl:w-1/3 md:w-1/2 p-4">
               <div className="border border-gray-200 p-6 rounded-lg">
-                <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-skin-inverted mb-4">
+                <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-cyan-600 text-white mb-4">
                   <svg
                     fill="none"
                     stroke="currentColor"
@@ -31,17 +35,16 @@ function Features() {
                   </svg>
                 </div>
                 <h2 className="text-lg text-skin-base font-medium title-font mb-2">
-                  Shooting Stars
+                  Our Progress
                 </h2>
                 <p className="leading-relaxed text-skin-base">
-                  Fingerstache flexitarian street art 8-bit waist co, subway
-                  tile poke farm.
+                  We are working on this project every day, updating new features and creating new usefull components!
                 </p>
               </div>
             </div>
             <div className="xl:w-1/3 md:w-1/2 p-4">
               <div className="border border-gray-200 p-6 rounded-lg">
-                <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-skin-inverted mb-4">
+                <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-cyan-600 text-white mb-4">
                   <svg
                     fill="none"
                     stroke="currentColor"
@@ -57,17 +60,16 @@ function Features() {
                   </svg>
                 </div>
                 <h2 className="text-lg text-skin-base font-medium title-font mb-2">
-                  The Catalyzer
+                  Easy to Cut and use
                 </h2>
                 <p className="leading-relaxed text-skin-base">
-                  Fingerstache flexitarian street art 8-bit waist co, subway
-                  tile poke farm.
+                 Its very easy to use our templates just cut and paste
                 </p>
               </div>
             </div>
             <div className="xl:w-1/3 md:w-1/2 p-4">
               <div className="border border-gray-200 p-6 rounded-lg">
-                <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-skin-inverted mb-4">
+                <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-cyan-600 text-white mb-4">
                   <svg
                     fill="none"
                     stroke="currentColor"
@@ -82,17 +84,17 @@ function Features() {
                   </svg>
                 </div>
                 <h2 className="text-lg text-skin-base font-medium title-font mb-2">
-                  Neptune
+                  Become Our User
                 </h2>
                 <p className="leading-relaxed text-skin-base">
-                  Fingerstache flexitarian street art 8-bit waist co, subway
-                  tile poke farm.
+                 If you are a developer you should not miss this opportunity! 
+                 Here you will find bunch of new features and UI components
                 </p>
               </div>
             </div>
             <div className="xl:w-1/3 md:w-1/2 p-4">
               <div className="border border-gray-200 p-6 rounded-lg">
-                <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-skin-inverted mb-4">
+                <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-cyan-600 text-white mb-4">
                   <svg
                     fill="none"
                     stroke="currentColor"
@@ -106,17 +108,16 @@ function Features() {
                   </svg>
                 </div>
                 <h2 className="text-lg text-skin-base font-medium title-font mb-2">
-                  Melanchole
+                  Flag Up
                 </h2>
                 <p className="leading-relaxed text-skin-base">
-                  Fingerstache flexitarian street art 8-bit waist co, subway
-                  tile poke farm.
+                 We are always here for you, you can contact us if you strong UI skills!
                 </p>
               </div>
             </div>
             <div className="xl:w-1/3 md:w-1/2 p-4">
               <div className="border border-gray-200 p-6 rounded-lg">
-                <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-skin-inverted mb-4">
+                <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-cyan-600 text-white mb-4">
                   <svg
                     fill="none"
                     stroke="currentColor"
@@ -130,17 +131,16 @@ function Features() {
                   </svg>
                 </div>
                 <h2 className="text-lg text-skin-base font-medium title-font mb-2">
-                  Bunker
+                  Themes
                 </h2>
                 <p className="leading-relaxed text-skin-base">
-                  Fingerstache flexitarian street art 8-bit waist co, subway
-                  tile poke farm.
+                  Most of our components are themable and Customizable
                 </p>
               </div>
             </div>
             <div className="xl:w-1/3 md:w-1/2 p-4">
               <div className="border border-gray-200 p-6 rounded-lg">
-                <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-skin-inverted mb-4">
+                <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-cyan-600 text-white mb-4">
                   <svg
                     fill="none"
                     stroke="currentColor"
@@ -154,18 +154,17 @@ function Features() {
                   </svg>
                 </div>
                 <h2 className="text-lg text-skin-base font-medium title-font mb-2">
-                  Ramona Falls
+                  We Ensure Security
                 </h2>
                 <p className="leading-relaxed text-skin-base">
-                  Fingerstache flexitarian street art 8-bit waist co, subway
-                  tile poke farm.
+                  We Ensure Security
                 </p>
               </div>
             </div>
           </div>
-          <button className="flex mx-auto mt-16 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
-            Button
-          </button>
+          <Link href="/auth/login" className="m-4 items-center bg-cyan-800 text-white font-bold px-12 py-4 rounded-lg shadow-xl">
+            Join Us Today
+          </Link>
         </div>
       </section>
     </div>

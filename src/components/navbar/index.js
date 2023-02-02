@@ -4,7 +4,6 @@ import { BsFillMenuButtonWideFill } from "react-icons/bs";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Image from "next/image";
 
 
 
@@ -61,6 +60,15 @@ export default function Navbar() {
                   <span className="text-sm">Templates</span>
                 </Link>
               </li>
+              <li className="nav-item">
+                  <Link
+                    className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
+                    href="/"
+                  >
+                    <i className="fab fa-pinterest text-lg leading-lg text-white opacity-75"></i>
+                    <span className="ml-2 text-sm">Home</span>
+                  </Link>
+                </li>
 
               
               {!user && (
@@ -79,7 +87,7 @@ export default function Navbar() {
                 <li>
                   <div>
                     {user.img ? (
-                      <Image
+                      <img
                         class="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
                         src={user.img}
                         alt="Bordered avatar"

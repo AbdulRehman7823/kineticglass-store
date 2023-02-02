@@ -98,7 +98,7 @@ function Card({ data,isSeller,isDelete }) {
   return (
     <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-xl dark:bg-gray-800 dark:border-gray-700 my-4 mx-2">
       <a href="#">
-        <Image
+        <img
           class="rounded-t-lg"
           src={data.siteImage ? data.siteImage : "/images/tmp.jpg"}
           alt=""

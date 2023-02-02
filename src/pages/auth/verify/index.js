@@ -16,7 +16,7 @@ const EmailVerify = () => {
         if (userId == undefined || token == undefined) {
           return;
         }
-        const url = `https://kg-server-production.up.railway.app/api/auth/${userId}/verify/${token}`;
+        const url = `${process.env.SERVER_URL}/api/auth/${userId}/verify/${token}`;
         const { data } = await axios.get(url);
         console.log(data);
         setValidUrl(true);
@@ -35,7 +35,8 @@ const EmailVerify = () => {
           <Image
             src="/images/verified.png"
             alt="success_img"
-            className={styles.success_img}
+            width="100%"
+            height="100%"
           />
           <h1 className="text-xl text-gray-700 my-12">
             Email verified successfully

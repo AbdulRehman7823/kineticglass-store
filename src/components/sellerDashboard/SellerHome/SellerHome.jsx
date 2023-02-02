@@ -39,6 +39,7 @@ function SellerHome() {
 
       paymentServices.managePayout(authServices.getLoggedInUser()._id).then(response=>{
         console.log("success",response);
+        alert.showSuccessAlert("We are making your Account!")
       }).catch(error=>{
         console.log("error",error);
         alert.showErrorAlert(error.message);
@@ -97,7 +98,7 @@ function SellerHome() {
           </h1>
           {(user  && user.withdrawEarning>0)?
           <button onClick={withdraw} className="bg-cyan-800 text-white px-4 py-2 rounded-md shadow-xl float-right">
-            Withdraw
+            {user && user.accountId?"Withdraw":"Make Withdraw account"}
           </button>:
           <button  disabled className="bg-gray-500 text-gray-600 px-4 py-2 rounded-md shadow-xl float-right">
           Withdraw
